@@ -41,6 +41,7 @@ import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.DbType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.toolkit.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * <p>
@@ -341,12 +342,26 @@ public class ConfigBuilder {
     private List<TableInfo> processTable(List<TableInfo> tableList, NamingStrategy strategy, StrategyConfig config) {
         String[] tablePrefix = config.getTablePrefix();
         String[] fieldPrefix = config.getFieldPrefix();
+        String[] tableSuffix = config.getTableSuffix();
         for (TableInfo tableInfo : tableList) {
-            tableInfo.setEntityName(strategyConfig, NamingStrategy.capitalFirst(processName(tableInfo.getName(), strategy, tablePrefix)));
+            String tableName = tableInfo.getName();
+            if(ArrayUtils.isNotEmpty(tableSuffix)) {
+                for(String suffix : tableSuffix) {
+                    if(StringUtils.isNotEmpty(suffix)) {
+                        //删除类名后缀
+                        suffix = suffix.toUpperCase();
+                        if(tableName.endsWith(suffix)){
+                            tableName = tableName.substring(0, tableName.lastIndexOf(suffix));
+                        }
+                    }
+                }
+            }
+            tableInfo.setEntityName(strategyConfig, NamingStrategy.capitalFirst(processName(tableName, strategy, tablePrefix)));
             if (StringUtils.isNotEmpty(globalConfig.getMapperName())) {
                 tableInfo.setMapperName(String.format(globalConfig.getMapperName(), tableInfo.getEntityName()));
             } else {
-                tableInfo.setMapperName(tableInfo.getEntityName() + ConstVal.MAPPER);
+//                tableInfo.setMapperName(tableInfo.getEntityName() + ConstVal.MAPPER);
+                tableInfo.setMapperName(tableInfo.getEntityName() + ConstVal.DAO);
             }
             if (StringUtils.isNotEmpty(globalConfig.getXmlName())) {
                 tableInfo.setXmlName(String.format(globalConfig.getXmlName(), tableInfo.getEntityName()));
@@ -356,7 +371,9 @@ public class ConfigBuilder {
             if (StringUtils.isNotEmpty(globalConfig.getServiceName())) {
                 tableInfo.setServiceName(String.format(globalConfig.getServiceName(), tableInfo.getEntityName()));
             } else {
-                tableInfo.setServiceName("I" + tableInfo.getEntityName() + ConstVal.SERVICE);
+//                tableInfo.setServiceName("I" + tableInfo.getEntityName() + ConstVal.SERVICE);
+                //service前缀不加I
+                tableInfo.setServiceName(tableInfo.getEntityName() + ConstVal.SERVICE);
             }
             if (StringUtils.isNotEmpty(globalConfig.getServiceImplName())) {
                 tableInfo.setServiceImplName(String.format(globalConfig.getServiceImplName(), tableInfo.getEntityName()));

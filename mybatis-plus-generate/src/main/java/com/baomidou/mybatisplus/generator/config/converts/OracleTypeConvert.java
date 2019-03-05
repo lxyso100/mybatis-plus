@@ -38,10 +38,10 @@ public class OracleTypeConvert implements ITypeConvert {
         } else if (t.contains("NUMBER")) {
             if (t.matches("NUMBER\\(+\\d\\)")) {
                 return DbColumnType.INTEGER;
-            } else if (t.matches("NUMBER\\(+\\d{2}+\\)")) {
-                return DbColumnType.LONG;
+            } else if (t.matches("NUMBER\\(+\\d{1,},{0,1}\\d{1,}+\\)")) {
+                return DbColumnType.DOUBLE;
             }
-            return DbColumnType.DOUBLE;
+            return DbColumnType.LONG;
         } else if (t.contains("FLOAT")) {
             return DbColumnType.FLOAT;
         } else if (t.contains("clob")) {

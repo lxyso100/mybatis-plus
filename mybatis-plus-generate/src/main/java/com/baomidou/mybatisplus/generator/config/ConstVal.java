@@ -31,6 +31,8 @@ public class ConstVal {
     public static final String SERVICE = "Service";
     public static final String SERVICEIMPL = "ServiceImpl";
     public static final String MAPPER = "Mapper";
+    //lics 2019/02/20
+    public static final String DAO = "Dao";
     public static final String XML = "Xml";
     public static final String CONTROLLER = "Controller";
 

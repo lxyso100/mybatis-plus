@@ -62,6 +62,12 @@ public class StrategyConfig {
     private String[] tablePrefix;
 
     /**
+     * 表后缀
+     * lics by 2019/2/20
+     */
+    private String[] tableSuffix;
+
+    /**
      * 字段前缀
      */
     private String[] fieldPrefix;
@@ -449,5 +455,14 @@ public class StrategyConfig {
 
     public boolean isEntityTableFieldAnnotationEnable() {
         return entityTableFieldAnnotationEnable;
+    }
+
+    public String[] getTableSuffix() {
+        return tableSuffix;
+    }
+
+    public StrategyConfig setTableSuffix(String[] tableSuffix) {
+        this.tableSuffix = tableSuffix;
+        return this;
     }
 }
